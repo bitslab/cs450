@@ -1,7 +1,7 @@
-TARGETS=server
+TARGETS=node
 
-server: server.c
-	gcc -o server server.c
+node: node.c
+	gcc -o node node.c
 
 all: $(TARGETS)
 
