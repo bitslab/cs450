@@ -97,12 +97,6 @@ int main(int argc, char **argv) {
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port); // byte order is significant
 	addr.sin_addr.s_addr = INADDR_ANY; // listen to all interfaces
-	
-	int res = bind(server_sock, (struct sockaddr*)&addr, sizeof(addr));
-	if(res < 0) {
-		perror("Error binding to port");
-		exit(1);
-	}
 
 	int yes=1;
   if (setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
@@ -110,11 +104,13 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-	/* workaround for funny OS X bug - need to start listening without select */
-	res=fcntl(server_sock, F_SETFL, O_NONBLOCK);
-  if(res<0) { perror("fcntl"); } 
+	int res = bind(server_sock, (struct sockaddr*)&addr, sizeof(addr));
+	if(res < 0) {
+		perror("Error binding to port");
+		exit(1);
+	}
+
 	if (listen (server_sock, 1) < 0) { perror ("listen"); exit(1); } 
-	fcntl(server_sock, F_SETFL, 0);
 
 	/* initializing data structure for select call */
 	fd_set readset;
