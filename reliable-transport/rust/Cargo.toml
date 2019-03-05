@@ -1,0 +1,6 @@
+[package]
+name = "reliable"
+version = "0.1.0"
+authors = ["Jakob Eriksson <jakob@uic.edu>"]
+
+[dependencies]
